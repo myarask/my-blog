@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>On Hooks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Prism.js CSS (for syntax highlighting) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/themes/prism-tomorrow.css"
+      rel="stylesheet"
+    />
+    <!-- Prism.js JS (for syntax highlighting) -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="flex min-h-screen">
+      <!-- Sidebar (Same as index.html) -->
+      <aside class="w-64 bg-blue-600 text-white p-6">
+        <h2 class="text-xl font-bold mb-4">Articles</h2>
+        <ul>
+          <li>
+            <a
+              href="on-hooks.html"
+              class="block w-full text-left py-2 px-4 bg-blue-700 rounded"
+            >
+              On Hooks
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-8 bg-white shadow-md rounded-lg m-6">
+        <h1 class="text-2xl font-bold">On Hooks</h1>
+
+        <p class="mt-4 text-gray-700">
+          A functional component wants to use hooks that have the following
+          qualities:
+        </p>
+
+        <ul class="mt-4 text-gray-700 list-disc pl-6">
+          <li>Is easy to understand</li>
+          <li>Is easy to discover</li>
+          <li>Is easy to consume</li>
+          <li>Does not leak implementation details</li>
+        </ul>
+
+        <p class="mt-4 text-gray-700">
+          The following is an example of such a hook:
+        </p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-jsx">
+const Avatar = () => {
+    const profile = useProfile();
+
+    return &lt;img src={profile.avatar} alt={profile.name} /&gt;;
+};
+</code>
+        </pre>
+
+        <h2 class="text-xl font-bold mt-8">Why is it easy to understand?</h2>
+        <p class="mt-4 text-gray-700">
+          The hook in this example uses direct and concise language. It has a
+          single target subject, which promotes focus. The terms on both sides
+          of the assignment match, minimizing cognitive load.
+        </p>
+
+        <p class="mt-4 text-gray-700">
+          To illustrate these points, consider the following alternatives:
+        </p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-js">
+// The "Data" suffix does not add descriptive value.
+// It is typical for hooks to return data.
+
+const profileData = useProfileData();
+</code>
+        </pre>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-js">
+// If a hook's scope is too broad or too narrow,
+// it becomes harder to describe.
+
+const staticProfileMedia = useStaticProfileMedia();
+</code>
+        </pre>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-js">
+// Using a variety of terms adds cognitive load 
+// and can mislead the developer.
+
+const user = useProfile();
+</code>
+        </pre>
+
+        <h2 class="text-xl font-bold mt-8">Why is it easy to discover?</h2>
+        <p class="mt-4 text-gray-700">
+          Hook discoverability is achieved by using a consistent naming
+          convention, where the left and right side of the assignment match,
+          like so:
+        </p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-js">
+const thing = useThing();
+</code>
+        </pre>
+
+        <p class="mt-4 text-gray-700">
+          A developer needing a common data point may assume that such a hook
+          does or should exist. If it does, code completion tools like
+          IntelliSense will find it. If it doesn't, the developer can create it
+          and benefit other areas of the app.
+        </p>
+
+        <h2 class="text-xl font-bold mt-8">Why is it easy to consume?</h2>
+        <p class="mt-4 text-gray-700">
+          The hook in the example does not have any required parameters. This
+          lets the hook be used without inducing extra complexity on the
+          consuming component. A well-designed hook should minimize the number
+          of required parameters.
+        </p>
+
+        <p class="mt-4 text-gray-700">
+          A hook with at least one required parameter always induces complexity
+          on its consumers:
+        </p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-jsx">
+const Avatar = () => {
+    const profile = useProfile();
+    const profile = useProfile(userId); {/* The component now has to dig up the userId. */}
+
+    return &lt;img src={profile.avatar} alt={profile.name} /&gt;;
+};
+</code>
+        </pre>
+
+        <h2 class="text-xl font-bold mt-8">
+          Why should it not leak implementation details?
+        </h2>
+        <p class="mt-4 text-gray-700">
+          When the hook excludes implementation details, refactoring the hook's
+          internals becomes easier. The developer is free to swap out the state
+          management solution, for example, without concerning themselves with
+          breaking other layers.
+        </p>
+
+        <a
+          href="index.html"
+          class="text-blue-500 hover:underline mt-4 inline-block"
+          >Back to Home</a
+        >
+      </main>
+    </div>
+  </body>
+</html>
