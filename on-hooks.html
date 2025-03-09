@@ -75,27 +75,13 @@ const Avatar = () => {
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-js">
-// The "Data" suffix does not add descriptive value.
-// It is typical for hooks to return data.
-
+// The "Data" suffix does not add descriptive value. It is typical for hooks to return data.
 const profileData = useProfileData();
-</code>
-        </pre>
 
-        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
-<code class="language-js">
-// If a hook's scope is too broad or too narrow,
-// it becomes harder to describe.
-
+// If a hook's scope is too broad or too narrow, it becomes harder to describe.
 const staticProfileMedia = useStaticProfileMedia();
-</code>
-        </pre>
 
-        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
-<code class="language-js">
-// Using a variety of terms adds cognitive load 
-// and can mislead the developer.
-
+// Using a variety of terms adds cognitive load and can mislead the developer.
 const user = useProfile();
 </code>
         </pre>
@@ -136,8 +122,8 @@ const thing = useThing();
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-jsx">
 const Avatar = () => {
-    const profile = useProfile();
-    const profile = useProfile(userId); {/* The component now has to dig up the userId. */}
+    const userId = useUserId();
+    const profile = useProfile(userId); // The component now has to dig up the userId.
 
     return &lt;img src={profile.avatar} alt={profile.name} /&gt;;
 };
