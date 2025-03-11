@@ -45,110 +45,98 @@
         <h1 class="text-2xl font-bold">On Sharing State</h1>
 
         <p class="mt-4 text-gray-700">
-          When sharing state across a React application, it is important to
-          avoid blocking operations, while also eliminating branching logic
-          downstream. This can be accomplished with a Provider and Gate pattern,
-          which allows requests to start as early as possible, and delays
-          blocking operations as late as possible.
+          You may get design requirements which need the following:
         </p>
 
-        <img
-          src="images/share-state.png"
-          alt="Shared state diagram"
-          class="mt-4"
-        />
+        <ul class="mt-4 text-gray-700">
+          <li><strong>Global state</strong> that is shared across domains.</li>
+          <li><strong>Domain state</strong> that is shared across pages.</li>
+          <li><strong>Page state</strong> that is shared across panels.</li>
+          <li>
+            <strong>Panel state</strong> that is shared across components.
+          </li>
+        </ul>
 
         <p class="mt-4 text-gray-700">
-          Sample implementation of a global state provider. Domain state
-          providers would follow a similar implementation.
+          If the data is remotely sourced, you will want to minimize or delay
+          amount of blocking operations in your app. In this situation, you can
+          accomplish this with Preloaders and Gates.
         </p>
+
+        <ul class="mt-4 text-gray-700">
+          <li>
+            <strong>Preloaders</strong> fetch remote data and store query
+            progress.
+          </li>
+          <li>
+            <strong>Gates</strong> block rendering until remote data is loaded
+            successfully.
+          </li>
+        </ul>
+
+        <p class="mt-4 text-gray-700">
+          The following diagram illustrates how global remote state may be
+          shared across domains. The same pattern can be used across other state
+          levels.
+        </p>
+
+        <div class="flex justify-center mt-4">
+          <img
+            src="images/share-state.png"
+            alt="Shared state diagram"
+            class="w-1/2"
+          />
+        </div>
+
+        <p class="mt-4 text-gray-700">Sample implementation of a Preloader:</p>
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-jsx">
-const GlobalStateContext = React.createContext(undefined);
+// This implementation assumes the project uses server state manager,
+// like React Query or SWR, which caches requests globally.
+//
+// You can handroll your own fetching and state management if needed.
+export const OrganizationPreloader = (&#123; children &#125;) =&gt; &#123;
+  // Start fetching the user data.
+  useOrganizationQuery();
 
-export const GlobalStateProvider = (&#123; children &#125;) =&gt; &#123;
-  // The provider will start loading the globally shared data.
-  // In this example, we are using Apollo Client, but alternative fetching solutions may be used.
-  const userQuery = useUserQuery();
-  const organizationQuery = useOrganizationQuery();
-
-  // Store the in-flight requests in global state.
-  // In this example, we are using React context, but alternative state management solutions may be used.
-  return (
-    &lt;GlobalStateContext.Provider value=&#123;&#123; userQuery, organizationQuery &#125;&#125;&gt;
-      &#123;children&#125;
-    &lt;/GlobalStateContext.Provider&gt;
-  );
-&#125;;
-
-export const useGlobalState = () =&gt; &#123;
-  const context = React.useContext(GlobalStateContext);
-
-  if (!context) &#123;
-    throw new Error("useGlobalState must be used under a GlobalStateProvider");
-  &#125;
-
-  return context;
+  return children;
 &#125;;
 </code>
         </pre>
 
-        <p class="mt-4 text-gray-700">Sample implementation of a state gate:</p>
+        <p class="mt-4 text-gray-700">Sample implementation of a Gate:</p>
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-jsx">
-import &#123; useGlobalState &#125; from "./GlobalState.context";
+const OrganizationContext = createContext(undefined);
 
-const GatedGlobalStateContext = React.createContext(undefined);
+export const OrganizationGate = (&#123; children &#125;) =&gt; &#123;
+  // Read from the same source as the Preloader
+  const &#123; loading, error, data &#125; = useOrganizationQuery();
 
-export const GlobalStateGate = (&#123; children &#125;) =&gt; &#123;
-  const &#123; userQuery, organizationQuery &#125; = useGlobalState();
+  // Block rendering if the data is not ready.
+  if (loading) return &lt;LoadingView /&gt;;
+  if (error) return &lt;ErrorView /&gt;;
 
-  // Block rendering until all global state is loaded.
-  if (userQuery.isLoading || organizationQuery.isLoading) &#123;
-    return &lt;LoadingView /&gt;;
-  &#125;
-
-  // Block rendering if there is an error loading global state.
-  if (userQuery.error || organizationQuery.error) &#123;
-    return &lt;ErrorView /&gt;;
-  &#125;
-
-  // Place loaded data into context or store.
-  // Downstream components may read this typesafe data synchronously.
+  // Strip away the query data and share the results only.
+  // This example uses React Context, but other state management solutions can be used.
   return (
-    &lt;GatedGlobalStateContext.Provider
-      value=&#123;&#123;
-        user: userQuery.data,
-        organization: organizationQuery.data,
-      &#125;&#125;
-    &gt;
+    &lt;OrganizationContext.Provider value=&#123;data&#125;&gt;
       &#123;children&#125;
-    &lt;/GatedGlobalStateContext.Provider&gt;
+    &lt;/OrganizationContext.Provider&gt;
   );
 &#125;;
 
-// Hook for synchronously reading user data in domains.
-export const useUser = () =&gt; &#123;
-  const context = React.useContext(GatedGlobalStateContext);
-
-  if (!context) &#123;
-    throw new Error("useUser must be used under a GlobalStateGate");
-  &#125;
-
-  return context.user;
-&#125;;
-
-// Hook for synchronously reading organization data in domains.
+// A handy hook for data consumers.
 export const useOrganization = () =&gt; &#123;
-  const context = React.useContext(GatedGlobalStateContext);
+  const context = useContext(OrganizationContext);
 
   if (!context) &#123;
-    throw new Error("useUser must be used under a GlobalStateGate");
+    throw new Error("useOrganization must be used under an OrganizationGate");
   &#125;
 
-  return context.organization;
+  return context;
 &#125;;
 </code>
         </pre>
