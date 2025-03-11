@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>On Sharing State</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Prism.js CSS (for syntax highlighting) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/themes/prism-tomorrow.css"
+      rel="stylesheet"
+    />
+    <!-- Prism.js JS (for syntax highlighting) -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="flex min-h-screen">
+      <!-- Sidebar (Same as index.html) -->
+      <aside class="w-64 bg-blue-600 text-white p-6">
+        <h2 class="text-xl font-bold mb-4">Articles</h2>
+        <ul>
+          <li>
+            <a
+              href="on-hooks.html"
+              class="block w-full text-left py-2 px-4 rounded"
+            >
+              On Hooks
+            </a>
+          </li>
+          <li>
+            <a
+              href="on-sharing-state.html"
+              class="block w-full text-left py-2 px-4 bg-blue-700 rounded"
+            >
+              On Sharing State
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-8">
+        <h1 class="text-2xl font-bold">On Sharing State</h1>
+
+        <p class="mt-4 text-gray-700">
+          When sharing state across a React application, it is important to
+          avoid blocking operations, while also eliminating branching logic
+          downstream. This can be accomplished with a Provider and Gate pattern,
+          which allows requests to start as early as possible, and delays
+          blocking operations as late as possible.
+        </p>
+
+        <img
+          src="images/share-state.png"
+          alt="Shared state diagram"
+          class="mt-4"
+        />
+
+        <p class="mt-4 text-gray-700">
+          Sample implementation of a global state provider. Domain state
+          providers would follow a similar implementation.
+        </p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-jsx">
+const GlobalStateContext = React.createContext(undefined);
+
+export const GlobalStateProvider = (&#123; children &#125;) =&gt; &#123;
+  // The provider will start loading the globally shared data.
+  // In this example, we are using Apollo Client, but alternative fetching solutions may be used.
+  const userQuery = useUserQuery();
+  const organizationQuery = useOrganizationQuery();
+
+  // Store the in-flight requests in global state.
+  // In this example, we are using React context, but alternative state management solutions may be used.
+  return (
+    &lt;GlobalStateContext.Provider value=&#123;&#123; userQuery, organizationQuery &#125;&#125;&gt;
+      &#123;children&#125;
+    &lt;/GlobalStateContext.Provider&gt;
+  );
+&#125;;
+
+export const useGlobalState = () =&gt; &#123;
+  const context = React.useContext(GlobalStateContext);
+
+  if (!context) &#123;
+    throw new Error("useGlobalState must be used under a GlobalStateProvider");
+  &#125;
+
+  return context;
+&#125;;
+</code>
+        </pre>
+
+        <p class="mt-4 text-gray-700">Sample implementation of a state gate:</p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-jsx">
+import &#123; useGlobalState &#125; from "./GlobalState.context";
+
+const GatedGlobalStateContext = React.createContext(undefined);
+
+export const GlobalStateGate = (&#123; children &#125;) =&gt; &#123;
+  const &#123; userQuery, organizationQuery &#125; = useGlobalState();
+
+  // Block rendering until all global state is loaded.
+  if (userQuery.isLoading || organizationQuery.isLoading) &#123;
+    return &lt;LoadingView /&gt;;
+  &#125;
+
+  // Block rendering if there is an error loading global state.
+  if (userQuery.error || organizationQuery.error) &#123;
+    return &lt;ErrorView /&gt;;
+  &#125;
+
+  // Place loaded data into context or store.
+  // Downstream components may read this typesafe data synchronously.
+  return (
+    &lt;GatedGlobalStateContext.Provider
+      value=&#123;&#123;
+        user: userQuery.data,
+        organization: organizationQuery.data,
+      &#125;&#125;
+    &gt;
+      &#123;children&#125;
+    &lt;/GatedGlobalStateContext.Provider&gt;
+  );
+&#125;;
+
+// Hook for synchronously reading user data in domains.
+export const useUser = () =&gt; &#123;
+  const context = React.useContext(GatedGlobalStateContext);
+
+  if (!context) &#123;
+    throw new Error("useUser must be used under a GlobalStateGate");
+  &#125;
+
+  return context.user;
+&#125;;
+
+// Hook for synchronously reading organization data in domains.
+export const useOrganization = () =&gt; &#123;
+  const context = React.useContext(GatedGlobalStateContext);
+
+  if (!context) &#123;
+    throw new Error("useUser must be used under a GlobalStateGate");
+  &#125;
+
+  return context.organization;
+&#125;;
+</code>
+        </pre>
+
+        <a
+          href="index.html"
+          class="text-blue-500 hover:underline mt-4 inline-block"
+          >Back to Home</a
+        >
+      </main>
+    </div>
+  </body>
+</html>
