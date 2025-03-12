@@ -13,52 +13,31 @@
     <!-- Prism.js JS (for syntax highlighting) -->
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script>
   </head>
-  <body class="bg-gray-100 text-gray-900">
-    <div class="flex min-h-screen">
-      <!-- Sidebar (Same as index.html) -->
-      <aside class="w-64 bg-blue-600 text-white p-6">
-        <h2 class="text-xl font-bold mb-4">Articles</h2>
-        <ul>
-          <li>
-            <a
-              href="on-hooks.html"
-              class="block w-full text-left py-2 px-4 bg-blue-700 rounded"
-            >
-              On Hooks
-            </a>
-          </li>
-          <li>
-            <a
-              href="on-sharing-state.html"
-              class="block w-full text-left py-2 px-4 rounded"
-            >
-              On Sharing State
-            </a>
-          </li>
-        </ul>
-      </aside>
+  <body
+    class="bg-gray-100 text-gray-900 grid grid-cols-[250px_1fr] min-h-screen"
+  >
+    <!-- Sidebar -->
+    <iframe src="sidebar.html" class="w-full h-full bg-blue-600"></iframe>
+    <!-- Main Content -->
+    <main class="p-8">
+      <h1 class="text-2xl font-bold">On Hooks</h1>
 
-      <!-- Main Content -->
-      <main class="flex-1 p-8">
-        <h1 class="text-2xl font-bold">On Hooks</h1>
+      <p class="mt-4 text-gray-700">
+        Commonly accessed data wants to be read like this:
+      </p>
 
-        <p class="mt-4 text-gray-700">
-          Commonly accessed data wants to be read like this:
-        </p>
-
-        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+      <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-js">
 const thing = useThing();
 </code>
         </pre>
 
-        <p class="mt-4 text-gray-700">
-          Comparing practical examples can explain why:
-        </p>
+      <p class="mt-4 text-gray-700">
+        Comparing practical examples can explain why:
+      </p>
 
-        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+      <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-js">
 // ✅ Familiar terminology
 // ✅ Consistent terminology
@@ -92,12 +71,11 @@ const dataPoint = useSelector((state) => state.my.obscure.data.point);
 </code>
         </pre>
 
-        <a
-          href="index.html"
-          class="text-blue-500 hover:underline mt-4 inline-block"
-          >Back to Home</a
-        >
-      </main>
-    </div>
+      <a
+        href="index.html"
+        class="text-blue-500 hover:underline mt-4 inline-block"
+        >Back to Home</a
+      >
+    </main>
   </body>
 </html>

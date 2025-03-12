@@ -12,36 +12,17 @@
     />
     <!-- Prism.js JS (for syntax highlighting) -->
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-javascript.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script>
   </head>
-  <body class="bg-gray-100 text-gray-900">
+  <body
+    class="bg-gray-100 text-gray-900 grid grid-cols-[250px_1fr] min-h-screen"
+  >
     <div class="flex min-h-screen">
-      <!-- Sidebar (Same as index.html) -->
-      <aside class="w-64 bg-blue-600 text-white p-6">
-        <h2 class="text-xl font-bold mb-4">Articles</h2>
-        <ul>
-          <li>
-            <a
-              href="on-hooks.html"
-              class="block w-full text-left py-2 px-4 rounded"
-            >
-              On Hooks
-            </a>
-          </li>
-          <li>
-            <a
-              href="on-sharing-state.html"
-              class="block w-full text-left py-2 px-4 bg-blue-700 rounded"
-            >
-              On Sharing State
-            </a>
-          </li>
-        </ul>
-      </aside>
+      <!-- Sidebar -->
+      <iframe src="sidebar.html" class="w-full h-full bg-blue-600"></iframe>
 
       <!-- Main Content -->
-      <main class="flex-1 p-8">
+      <main class="p-8">
         <h1 class="text-2xl font-bold">On Sharing State</h1>
 
         <p class="mt-4 text-gray-700">
