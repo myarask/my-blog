@@ -55,13 +55,13 @@
     <!-- Main Content -->
     <main class="overflow-y-auto h-screen">
       <!-- Home -->
-      <section id="home" class="p-6">
+      <section id="home" class="hidden p-6">
         <h1 class="text-2xl font-bold">Welcome to my thoughts on React</h1>
         <p class="mt-4 text-gray-700">Select an article from the sidebar.</p>
       </section>
 
       <!-- Hooks -->
-      <section id="hooks" class="p-6">
+      <section id="hooks" class="hidden p-6">
         <h1 class="text-2xl font-bold">On Hooks</h1>
 
         <p class="mt-4 text-gray-700">
@@ -114,7 +114,7 @@ const dataPoint = useSelector((state) => state.my.obscure.data.point);
       </section>
 
       <!-- Shared State -->
-      <section id="shared-state" class="p-6">
+      <section id="shared-state" class="hidden p-6">
         <h1 class="text-2xl font-bold">On Sharing State</h1>
 
         <p class="mt-4 text-gray-700">

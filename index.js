@@ -1,9 +1,9 @@
 const showSection = (sectionId) => {
   // Show a single section based on the sectionId
   document.querySelectorAll("section").forEach((section) => {
-    section.style.display = "none";
+    section.classList.add("hidden");
   });
-  document.getElementById(sectionId).style.display = "block";
+  document.getElementById(sectionId).classList.remove("hidden");
 };
 
 document.addEventListener("DOMContentLoaded", () => {
