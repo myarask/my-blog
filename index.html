@@ -15,6 +15,7 @@
     <!-- Prism.js JS (for syntax highlighting) -->
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-typescript.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script>
   </head>
   <body
@@ -48,6 +49,15 @@
             onclick="showSection('shared-state')"
           >
             On Sharing State
+          </a>
+        </li>
+        <li>
+          <a
+            href="#sub-optimal-abstractions"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('sub-optimal-abstractions')"
+          >
+            Sub-optimal Abstractions
           </a>
         </li>
       </ul>
@@ -109,6 +119,69 @@ const profile = getProfile();
 // ⚠️ Using the state management library directly can be advantageous for obscure data points.
 // ⚠️ There are no scaling benefits for custom hooks that are used only once.
 const dataPoint = useSelector((state) => state.my.obscure.data.point);
+</code>
+        </pre>
+      </section>
+
+      <!-- Shared State -->
+      <section id="sub-optimal-abstractions" class="hidden p-6">
+        <h1 class="text-2xl font-bold">Sub-optimal abstractions</h1>
+
+        <p class="mt-4 text-gray-700">
+          Removing abstractions which are used only once will always decrease
+          the size of the source code. It will often shrink the size of the
+          bundle, and it can remove the number of operations performed at
+          runtime.
+        </p>
+
+        <p class="mt-4 text-gray-700">Before</p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-ts">
+const isAprilFools = () => {
+  const today = new Date();
+  const month = today.getMonth();
+  const date = today.getDate();
+  return month === Month.April && date === 1;
+};
+
+if (isAprilFools()) {
+  console.log("April Fools!");
+} else {
+  console.log("Hello, World!");
+}
+</code>
+</pre>
+        <p class="mt-4 text-gray-700">
+          Before, Minified (Input: 268 bytes; Output: 173 bytes; Compression:
+          35.45%, saving: 95 bytes;)
+        </p>
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-ts">
+const isAprilFools=()=>{const o=new Date,l=o.getMonth(),e=o.getDate();return l===Month.April&&1===e};isAprilFools()?console.log("April Fools!"):console.log("Hello, World!");
+</code>
+        </pre>
+
+        <p class="mt-4 text-gray-700">After</p>
+
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-ts">
+const today = new Date();
+
+if (today.getMonth() === Month.April && today.getDate() === 1) {
+  console.log("April Fools!");
+} else {
+  console.log("Hello, World!");
+}
+</code>
+        </pre>
+        <p class="mt-4 text-gray-700">
+          After, Minified (Input: 165 bytes; Output: 130 bytes; Compression:
+          21.21%, saving: 35 bytes;)
+        </p>
+        <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
+<code class="language-ts">
+const today=new Date;today.getMonth()===Month.April&&1===today.getDate()?console.log("April Fools!"):console.log("Hello, World!");
 </code>
         </pre>
       </section>
