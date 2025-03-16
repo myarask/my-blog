@@ -53,11 +53,11 @@
         </li>
         <li>
           <a
-            href="#sub-optimal-abstractions"
+            href="#performance-size"
             class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
-            onclick="showSection('sub-optimal-abstractions')"
+            onclick="showSection('performance-size')"
           >
-            Sub-optimal Abstractions
+            Performance: Size
           </a>
         </li>
       </ul>
@@ -124,17 +124,17 @@ const dataPoint = useSelector((state) => state.my.obscure.data.point);
       </section>
 
       <!-- Shared State -->
-      <section id="sub-optimal-abstractions" class="hidden p-6">
-        <h1 class="text-2xl font-bold">Sub-optimal abstractions</h1>
+      <section id="performance-size" class="hidden p-6">
+        <h1 class="text-2xl font-bold">Performance: Size</h1>
 
         <p class="mt-4 text-gray-700">
           Removing abstractions which are used only once will always decrease
           the size of the source code. It will often shrink the size of the
-          bundle, and it can remove the number of operations performed at
-          runtime.
+          build, and it might improve the speed of the program.
         </p>
 
         <p class="mt-4 text-gray-700">Before</p>
+        <p class="mt-4 text-gray-700">Average time: 125.52ns</p>
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-ts">
@@ -156,6 +156,7 @@ if (isAprilFools()) {
           Before, Minified (Input: 268 bytes; Output: 173 bytes; Compression:
           35.45%, saving: 95 bytes;)
         </p>
+        <p class="mt-4 text-gray-700">Average Time: 125.08ns</p>
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-ts">
 const isAprilFools=()=>{const o=new Date,l=o.getMonth(),e=o.getDate();return l===Month.April&&1===e};isAprilFools()?console.log("April Fools!"):console.log("Hello, World!");
@@ -163,6 +164,7 @@ const isAprilFools=()=>{const o=new Date,l=o.getMonth(),e=o.getDate();return l==
         </pre>
 
         <p class="mt-4 text-gray-700">After</p>
+        <p class="mt-4 text-gray-700">Average Time: 122.09ns</p>
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-ts">
@@ -179,6 +181,7 @@ if (today.getMonth() === Month.April && today.getDate() === 1) {
           After, Minified (Input: 165 bytes; Output: 130 bytes; Compression:
           21.21%, saving: 35 bytes;)
         </p>
+        <p class="mt-4 text-gray-700">Average Time: 121.36ns</p>
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
 <code class="language-ts">
 const today=new Date;today.getMonth()===Month.April&&1===today.getDate()?console.log("April Fools!"):console.log("Hello, World!");
