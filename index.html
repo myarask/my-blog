@@ -15,8 +15,8 @@
     <!-- Prism.js JS (for syntax highlighting) -->
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-typescript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-typescript.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-jsx.min.js"></script> -->
   </head>
   <body
     class="bg-gray-100 text-gray-900 grid grid-cols-[250px_1fr] min-h-screen"
@@ -35,18 +35,18 @@
       <ul>
         <li>
           <a
-            href="#hooks"
+            href="#custom-hooks"
             class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
-            onclick="showSection('hooks')"
+            onclick="showSection('custom-hooks')"
           >
-            On Hooks
+            Style: Custom hooks
           </a>
         </li>
         <li>
           <a
-            href="#shared-state"
+            href="#performance-prefetching"
             class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
-            onclick="showSection('shared-state')"
+            onclick="showSection('performance-prefetching')"
           >
             Performance: Prefetching
           </a>
@@ -71,8 +71,8 @@
       </section>
 
       <!-- Hooks -->
-      <section id="hooks" class="hidden p-6">
-        <h1 class="text-2xl font-bold">On Hooks</h1>
+      <section id="custom-hooks" class="hidden p-6">
+        <h1 class="text-2xl font-bold">Style: Custom hooks</h1>
 
         <p class="mt-4 text-gray-700">
           Commonly accessed data wants to be read like this:
@@ -116,7 +116,7 @@ const profile = getProfile();
 
 
 
-// ⚠️ Using the state management library directly can be advantageous for obscure data points.
+// ⚠️ Using the state management library directly is advantageous for obscure data points.
 // ⚠️ There are no scaling benefits for custom hooks that are used only once.
 const dataPoint = useSelector((state) => state.my.obscure.data.point);
 </code>
@@ -137,7 +137,7 @@ const dataPoint = useSelector((state) => state.my.obscure.data.point);
         <p class="mt-4 text-gray-700">Average time: 125.52ns</p>
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
-<code class="language-ts">
+<code class="language-js">
 const isAprilFools = () => {
   const today = new Date();
   const month = today.getMonth();
@@ -158,7 +158,7 @@ if (isAprilFools()) {
         </p>
         <p class="mt-4 text-gray-700">Average Time: 125.08ns</p>
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
-<code class="language-ts">
+<code class="language-js">
 const isAprilFools=()=>{const o=new Date,l=o.getMonth(),e=o.getDate();return l===Month.April&&1===e};isAprilFools()?console.log("April Fools!"):console.log("Hello, World!");
 </code>
         </pre>
@@ -167,7 +167,7 @@ const isAprilFools=()=>{const o=new Date,l=o.getMonth(),e=o.getDate();return l==
         <p class="mt-4 text-gray-700">Average Time: 122.09ns</p>
 
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
-<code class="language-ts">
+<code class="language-js">
 const today = new Date();
 
 if (today.getMonth() === Month.April && today.getDate() === 1) {
@@ -183,24 +183,25 @@ if (today.getMonth() === Month.April && today.getDate() === 1) {
         </p>
         <p class="mt-4 text-gray-700">Average Time: 121.36ns</p>
         <pre class="bg-gray-800 text-white p-4 rounded-lg mt-4">
-<code class="language-ts">
+<code class="language-js">
 const today=new Date;today.getMonth()===Month.April&&1===today.getDate()?console.log("April Fools!"):console.log("Hello, World!");
 </code>
         </pre>
       </section>
 
       <!-- Shared State -->
-      <section id="shared-state" class="hidden p-6">
+      <section id="performance-prefetching" class="hidden p-6">
         <h1 class="text-2xl font-bold">Performance: Prefetching</h1>
 
         <p class="mt-4 text-gray-700">
-          One way to finish tasks earlier is to start the task earlier. Your web
-          app should begin loading data as soon as it known to be needed.
+          Tasks can be finished earlier by starting earlier. Your web app should
+          begin loading data as soon as it confirmed to be needed.
         </p>
 
         <p class="mt-4 text-gray-700">
           In this example, there is a MissionPage, which is loaded
-          asynchronously. The Launcher component is capable of starting the
+          asynchronously. This component mounts after the user decides to see
+          the Mission page. The Launcher component is capable of starting the
           fetch operations for data needed by the page.
         </p>
 
@@ -218,6 +219,8 @@ const today=new Date;today.getMonth()===Month.April&&1===today.getDate()?console
           sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
         ></iframe>
 
+        <hr />
+
         <p class="mt-4 text-gray-700">
           The page component will read the response data synchronously, as it
           will not render until all promises in suspense are resolved.
@@ -233,6 +236,27 @@ const today=new Date;today.getMonth()===Month.April&&1===today.getDate()?console
             overflow: hidden;
           "
           title="Example"
+          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+        ></iframe>
+
+        <hr />
+
+        <p class="mt-4 text-gray-700">
+          For data that is needed in every session, the fetch operations can be
+          started before the React app is mounted.
+        </p>
+
+        <iframe
+          src="https://codesandbox.io/embed/lvkl7p?view=editor+%2B+preview&module=%2Fsrc%2Fapollo.ts"
+          style="
+            width: 100%;
+            height: 500px;
+            border: 0;
+            border-radius: 4px;
+            overflow: hidden;
+          "
+          title="launchers-gates (forked)"
           allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
           sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
         ></iframe>
