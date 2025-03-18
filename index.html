@@ -105,6 +105,15 @@
             Performance: Size
           </a>
         </li>
+        <li>
+          <a
+            href="#barrel-files"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('barrel-files')"
+          >
+            Performance: Barrel Files
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- Main Content -->
@@ -147,7 +156,27 @@
       <section id="style-colocation" class="hidden p-6">
         <h1 class="text-2xl font-bold">Style: colocation</h1>
 
-        <p>TODO</p>
+        <p class="mt-4 text-gray-700">
+          By phyically grouping code around features, the developer can access
+          it without making jumps around the codebase. Doing this also makes it
+          easier to scope pipeline jobs to the affected code.
+        </p>
+
+        <p class="mt-4 text-gray-700">
+          The following is an example of how files might be named in order to
+          group it by feature:
+        </p>
+
+        <ul class="mt-4">
+          <li>MyComponent.tsx</li>
+          <li>MyComponent.test.tsx</li>
+          <li>MyComponent.css</li>
+          <li>MyComponent.hooks.ts</li>
+          <li>MyComponent.hooks.test.ts</li>
+          <li>MyComponent.queries.ts</li>
+          <li>MyComponent.mutations.ts</li>
+          <li>MyComponent.types.ts</li>
+        </ul>
       </section>
 
       <!-- Hooks -->
