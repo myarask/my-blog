@@ -35,11 +35,56 @@
       <ul>
         <li>
           <a
+            href="#state-server-vs-client"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('state-server-vs-client')"
+          >
+            State: Server vs Client
+          </a>
+        </li>
+        <li>
+          <a
+            href="#state-displays"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('state-displays')"
+          >
+            State: Displays
+          </a>
+        </li>
+        <li>
+          <a
+            href="#state-forms"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('state-forms')"
+          >
+            State: Forms
+          </a>
+        </li>
+        <li>
+          <a
+            href="#state-tables"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('state-tables')"
+          >
+            State: Tables
+          </a>
+        </li>
+        <li>
+          <a
             href="#custom-hooks"
             class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
             onclick="showSection('custom-hooks')"
           >
             Style: Custom hooks
+          </a>
+        </li>
+        <li>
+          <a
+            href="#style-colocation"
+            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
+            onclick="showSection('style-colocation')"
+          >
+            Style: Colocation
           </a>
         </li>
         <li>
@@ -68,6 +113,41 @@
       <section id="home" class="hidden p-6">
         <h1 class="text-2xl font-bold">Welcome to my thoughts on React</h1>
         <p class="mt-4 text-gray-700">Select an article from the sidebar.</p>
+      </section>
+
+      <!-- State: Server vs Client -->
+      <section id="state-server-vs-client" class="hidden p-6">
+        <h1 class="text-2xl font-bold">State: Server vs Client</h1>
+
+        <p>TODO</p>
+      </section>
+
+      <!-- State: Displays -->
+      <section id="state-displays" class="hidden p-6">
+        <h1 class="text-2xl font-bold">State: Displays</h1>
+
+        <p>TODO</p>
+      </section>
+
+      <!-- State: Forms -->
+      <section id="state-forms" class="hidden p-6">
+        <h1 class="text-2xl font-bold">State: Forms</h1>
+
+        <p>TODO</p>
+      </section>
+
+      <!-- State: Tables -->
+      <section id="state-tables" class="hidden p-6">
+        <h1 class="text-2xl font-bold">State: Tables</h1>
+
+        <p>TODO</p>
+      </section>
+
+      <!-- Style: Colocation -->
+      <section id="style-colocation" class="hidden p-6">
+        <h1 class="text-2xl font-bold">Style: colocation</h1>
+
+        <p>TODO</p>
       </section>
 
       <!-- Hooks -->
@@ -201,8 +281,8 @@ const today=new Date;today.getMonth()===Month.April&&1===today.getDate()?console
         <p class="mt-4 text-gray-700">
           In this example, there is a MissionPage, which is loaded
           asynchronously. This component mounts after the user decides to see
-          the Mission page. The Launcher component is capable of starting the
-          fetch operations for data needed by the page.
+          the Mission page. The Launcher component starts fetching the data
+          needed by the page.
         </p>
 
         <iframe
