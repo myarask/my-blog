@@ -44,29 +44,11 @@
         </li>
         <li>
           <a
-            href="#state-displays"
+            href="#when-to-split"
             class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
-            onclick="showSection('state-displays')"
+            onclick="showSection('when-to-split')"
           >
-            State: Displays
-          </a>
-        </li>
-        <li>
-          <a
-            href="#state-forms"
-            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
-            onclick="showSection('state-forms')"
-          >
-            State: Forms
-          </a>
-        </li>
-        <li>
-          <a
-            href="#state-tables"
-            class="block w-full text-left py-2 px-4 hover:bg-blue-500 rounded"
-            onclick="showSection('state-tables')"
-          >
-            State: Tables
+            Style: When to split a component
           </a>
         </li>
         <li>
@@ -128,28 +110,35 @@
       <section id="state-server-vs-client" class="hidden p-6">
         <h1 class="text-2xl font-bold">State: Server vs Client</h1>
 
-        <p>TODO</p>
-      </section>
+        <p class="mt-4 text-gray-700">
+          From your app's perspective, the biggest difference between server and 
+          client state is that server state is asynchronous while client state is 
+          synchronous. The difference in read/write timing is enough to merit their 
+          own state management solution. Mixing these states together in the same 
+          store will almost always increase the complexity of your app.
+        </p>
 
-      <!-- State: Displays -->
-      <section id="state-displays" class="hidden p-6">
-        <h1 class="text-2xl font-bold">State: Displays</h1>
+        <p class="mt-4 text-gray-700">
+          For server state, it is recommended to use a server state library like React 
+          Query, Apollo Client, or SWR. These libraries are designed to handle the 
+          asynchronous nature of server state, and they provide features like caching, 
+          background updates, and automatic retries. They also help to keep your 
+          components clean and focused on rendering, rather than managing the 
+          complexities of server state.
+        </p>
 
-        <p>TODO</p>
-      </section>
+        <p class="mt-4 text-gray-700">
+          For client state, it is recommended to use a client state library like Zustand, MobX, or
+          Redux. These libraries are ideal for the synchronous nature of client state. They are 
+          useful for sharing state between components, eliminating prop drilling, and facilitating state
+          rehydration.
+        </p>
 
-      <!-- State: Forms -->
-      <section id="state-forms" class="hidden p-6">
-        <h1 class="text-2xl font-bold">State: Forms</h1>
+        <p class="mt-4 text-gray-700">
+          In practical terms, this means that server and client state should not be mixed into the same store.
+          Use the server state library cache to read data from the server. 
+        </p>
 
-        <p>TODO</p>
-      </section>
-
-      <!-- State: Tables -->
-      <section id="state-tables" class="hidden p-6">
-        <h1 class="text-2xl font-bold">State: Tables</h1>
-
-        <p>TODO</p>
       </section>
 
       <!-- Style: Colocation -->
@@ -177,6 +166,66 @@
           <li>MyComponent.mutations.ts</li>
           <li>MyComponent.types.ts</li>
         </ul>
+      </section>
+
+      <!-- Style: When to split a component -->
+      <section id="when-to-split" class="hidden p-6">
+        <h1 class="text-2xl font-bold">When to split a component</h1>
+
+        <p class="mt-4 text-gray-700">
+          A common question in React is when to split a component. How big is
+          too big? When does a component become too complex? The following is a
+          set of heuristics to help you manage complexity in your React app.
+        </p>
+
+        <h2 class="mt-4 text-xl font-bold">Classification 1: Interactive components</h1>
+
+        <p class="mt-4 text-gray-700">
+          Interactive elements like buttons and input fields are often merited to
+          their own components.
+        </p>
+
+        <p class="mt-4 text-gray-700">
+          The first benefit to this heuristic is that it allows the developer 
+          to quickly understand the cause and effect of a user interaction.
+          The trigger and the outcome are colocated, which minimizes the amount 
+          of jumps a reader will perform when reviewing the code.
+        </p>
+
+        <p class="mt-4 text-gray-700">
+          Secondly, this heuristic can eliminate many unnecessary naming decisions.
+          Every click handler may be named "handleClick", and every change handler
+          may be named "handleChange". The naming decision is instead found in the 
+          component name, which can usually be influenced by the copy in the component. 
+          A button element which reads "Confirm Order" may be named "ConfirmOrderButton".
+          An input element with a placeholder of "search" may be named "SearchInput".
+        </p>
+
+        <h2 class="mt-4 text-xl font-bold">Classification 2: Utility components</h1>
+
+        <p class="mt-4 text-gray-700">
+          To reduce complexity in your React components, you will want to keep 
+          a separation of concerns with utility operations. For example, let's 
+          assume your app will need to initialize a performance monitor and a 
+          data analytics service on mount. Rather than mixing these two concerns 
+          into a single useEffect, break them into their own components. Utility 
+          components are focused on operations, and typically render nothing.
+        </p>
+
+        <p class="mt-4 text-gray-700">
+          Providers, error boundaries, gates, launchers are some examples of utility components.
+        </p>
+
+        <h2 class="mt-4 text-xl font-bold">Classification 3: Layout components</h1>
+
+        <p class="mt-4 text-gray-700">
+          When interactive elements and utility components are stripped away, what 
+          remains is a layout component. From here, the developer can manage the 
+          layout of a view from a single file. Layout components may grow large, but 
+          will never be complex. At most, a layout compnent may contain some trivial 
+          conditional rendering logic.
+        </p>
+
       </section>
 
       <!-- Hooks -->
